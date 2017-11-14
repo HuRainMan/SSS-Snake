@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>S-Snake</title>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+    <div id = "boss"></div>
+    <div id="btn">
+        点击开始
+    </div>
+    <div id = "score">
+        <span id = "hard">当前难度: 0</span>  
+        <progress value="0" max="100" id = 'level'></progress>
+        <span id = "newScore">当前得分为: 0分</span>
+        <br>
+        <span id = "hisScore">历史最高分为: 2分</span>
+    </div>
+    <div id="tips">
+        按空格键重新开始游戏
+    </div>
+</body>
+<script data-main = "./js/main" src="./js/require.js"></script>
+</html>
