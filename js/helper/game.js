@@ -9,6 +9,8 @@ define(['helper/food','helper/snake'],function (Food,Snake) {
         this.tips = document.getElementById('tips');
         this.level = document.getElementById('level');
         this.hard = document.getElementById('hard');
+        this.spans = document.getElementsByClassName('spans');
+        this.beishu = options.beishu || 1;
         this.food = new Food({game : this});
         this.snake = new Snake({game : this});
         this.timer = options.timer || null;
@@ -26,16 +28,16 @@ define(['helper/food','helper/snake'],function (Food,Snake) {
             e = e || event;
             switch (e.keyCode) {
                 case 37 : 
-                    this.snake.direction = (this.snake.direction !== 'right') && (this.snake.direction = 'left');
+                    this.snake.direction = (this.snake.direction !== 'right') ? (this.snake.direction = 'left') : 'right';
                 break;
                 case 38 :
-                    this.snake.direction = (this.snake.direction !== 'down') && (this.snake.direction = 'up');
+                    this.snake.direction = (this.snake.direction !== 'down') ? (this.snake.direction = 'up') : 'down';
                 break;
                 case 39 :
-                     this.snake.direction = (this.snake.direction !== 'left') && (this.snake.direction = 'right');
+                     this.snake.direction = (this.snake.direction !== 'left') ? (this.snake.direction = 'right') : 'left';
                 break;
                 case 40 :
-                    this.snake.direction = (this.snake.direction !== 'up') && (this.snake.direction = 'down');
+                    this.snake.direction = (this.snake.direction !== 'up') ? (this.snake.direction = 'down') : 'up';
                 break;                
             }
         }).bind(this)
@@ -43,10 +45,23 @@ define(['helper/food','helper/snake'],function (Food,Snake) {
     }
     
     methods.timerGo = function () {
-        clearInterval(this.timer);
-        this.timer = setInterval((function () {
-            this.controller();
-        }).bind(this),this.intervers)
+        var that = this;
+        var speed = that.intervers; // 200
+        function go () {
+            if (that.snake.stopIt) {
+                return;
+            }
+            clearTimeout(that.timer);
+            that.timer = window.setTimeout(function () {
+                speed = that.intervers - that.snake.score*that.beishu;
+                speed = speed <= 20 ? 20 : speed;
+                that.controller();
+               
+                go();
+            },speed)
+
+        }
+        go();
     }
     return Game;
 });

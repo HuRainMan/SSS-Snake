@@ -8,7 +8,28 @@ require(['helper/game'],function (Game) {
             if (e.keyCode === 13) {
                 start();
             }
-        })
+        })  
+
+    for (var i = 0; i < game.spans.length; i++) { 
+            game.spans[i].index = i;
+            game.spans[i].addEventListener('click',function () {
+                game.snake.stopIt = true;
+                for (var i = 0; i < game.spans.length; i++) { 
+                    game.spans[i].parentNode.classList.remove('slected');
+                 }
+
+                 this.parentNode.classList.add('slected');
+                 game.beishu = this.index + 8;
+
+                 var nandu =  (this.index+1) * 33;
+                 game.level.value  = nandu;
+                 game.hard.innerText = "当前难度: " + nandu;
+                 game.snake.stopIt = false;
+                 start();
+                 
+            })
+         }
+
 
     function start() {
        game.btn.style.display = 'none';

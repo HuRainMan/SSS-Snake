@@ -6,6 +6,7 @@ define(function () {
         this.h = options.h || 20;
         this.score = 0;
         this.direction = options.direction || 'right';
+        this.stopIt = false;
         this.body = [
             {
                 x: 2,
@@ -56,8 +57,12 @@ define(function () {
         this.eatFood();
         // 在迈出下一步之前 判断 他的方向 以及 位置 ==> 如果执迷不悟 ==> 停止函数并返回 ==> otherwise ==> 不返回的话会多走一步
         if (!this.checkCrash()) {
-            // 死亡之后清除定时器 
-            clearInterval(this.game.timer);
+            // 死亡之后清除定时器  ==> 这里改成了 setTimeout 的方式 ==> 定时器的id 是不停的变化的  ==> 所以这个方法不好用
+            // clearTimeout(this.game.timer);
+
+            // 添加开关 传入到 game 中  就可以 直接将程序完结了 
+            this.stopIt = true;
+
             // 将 得分 存储到 本地存储 
             var history = JSON.parse(window.localStorage.getItem('historyScore') || '[]');
             if (this.score > history.score) {
@@ -137,10 +142,11 @@ define(function () {
             this.drawSnakeBody();
             // addPoints
             this.addPoints();
-            // 
-            var nandu =  Math.floor(this.score/2) > 100 ? 100 :  Math.floor(this.score/2);
-            this.game.level.value  = nandu;
-            this.game.hard.innerText = "当前难度: " + nandu;
+            // 计算出每次随机的分数
+            // var randoms = 3 + Math.round(Math.random());
+            // var nandu =  this.game.beishu * 33;
+            // this.game.level.value  = nandu;
+            // this.game.hard.innerText = "当前难度: " + nandu;
         }
     }
 
